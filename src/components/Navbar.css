@@ -1,0 +1,35 @@
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: steelblue;
+    box-shadow: 0 0 8px 2px black;
+    color: rgb(182, 31, 31);
+    position: relative;
+}
+.navbar-container div {
+    padding: 20px;
+}
+.logo {
+    width: 39px;
+}
+.fa-user-circle {
+    font-size: 1.5rem;
+}
+.fa-user-circle:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+.navbar-link {
+    text-decoration: none;
+    color: palegoldenrod;
+}
+.menu {
+    position: absolute;
+    top: 270px;
+    right: 225px;
+    /* display: none; */
+}
+.menu.active {
+    display: block;
+}
