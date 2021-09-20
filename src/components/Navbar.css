@@ -4,7 +4,7 @@
     justify-content: space-between;
     background-color: steelblue;
     box-shadow: 0 0 8px 2px black;
-    color: rgb(182, 31, 31);
+    color: whitesmoke;
     position: relative;
 }
 .navbar-container div {
@@ -26,8 +26,12 @@
 }
 .menu {
     position: absolute;
-    top: 270px;
-    right: 225px;
+    top: 70px;
+    right: 25px;
+    background-color: white;
+    color: black;
+    border: black;
+    box-shadow: 0 0 8px 2px black;
     /* display: none; */
 }
 .menu.active {

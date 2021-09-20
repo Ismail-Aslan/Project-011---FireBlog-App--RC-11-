@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "./../images/logo.jpeg";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [showToggle, setShowToggle] = useState(false);
@@ -28,8 +29,9 @@ export default function Navbar() {
 
       {showToggle && (
         <div className={"menu"}>
-          <p>Login</p>
-          <p>Register</p>
+          <Link className="navbar-link" to="/login" ><p>Login</p></Link>
+          <Link className="navbar-link" to="/register" ><p>Register</p></Link>
+          
         </div>
       )}
 
