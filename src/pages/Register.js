@@ -8,13 +8,15 @@ import { Redirect } from "react-router";
 export default function Register() {
   const history = useHistory();
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+
   const [password, setPassword] = useState('');
   const { currentUser } = useContext(AuthContext);
 
   const handleSubmit = () => {
-    const user = { email, password };
+    const user = { email, password,name };
    
-    createUser(user.email, user.password);
+    createUser(user.email, user.password, user.name);
     history.push('/');
   }
 
@@ -32,9 +34,13 @@ export default function Register() {
     <div className="register">
       
       <div className="register-form">
-        <h1 className="form-title display-3">Register</h1>
+        <h1 className="form-title display-3">REGISTER</h1>
         <form id="register">
 
+          <div className="mb-3">
+            <label htmlFor="displayname" className="form-label display-4">Name</label>
+            <input type="email" className="form-control" id="name" placeholder="Enter your name..." onChange={e => setName(e.target.value)} />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label display-4">Email</label>
             <input type="email" className="form-control" id="email" placeholder="Enter your email address..." onChange={e => setEmail(e.target.value)} />
