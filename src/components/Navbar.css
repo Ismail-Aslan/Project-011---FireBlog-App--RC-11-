@@ -6,6 +6,7 @@
     box-shadow: 0 0 8px 2px black;
     color: whitesmoke;
     position: relative;
+    max-height: 20vh;
 }
 .navbar-container div {
     padding: 20px;

@@ -1,25 +1,32 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { continueWithGoogle, createUser } from './../helpers/firebase';
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { Redirect } from "react-router";
+
 
 export default function Register() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { currentUser } = useContext(AuthContext);
 
   const handleSubmit = () => {
     const user = { email, password };
    
     createUser(user.email, user.password);
-    // history.push('/');
+    history.push('/');
   }
 
   const handleProviderRegister = () => {
     continueWithGoogle();
-    // history.push('/');
+    history.push('/');
   }
 
 
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="register">

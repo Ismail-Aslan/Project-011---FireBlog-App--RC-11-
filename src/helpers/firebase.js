@@ -38,7 +38,7 @@ export const createUser = ( email, password)=> {
   });
 }
 
-export const signIn = ( email, password) => {
+export const logIn = ( email, password) => {
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
@@ -49,6 +49,16 @@ export const signIn = ( email, password) => {
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
+    console.log("--------------------------------------------");
+
+    if (errorCode=="auth/user-not-found"){
+      alert("Please sign up to continue!")
+    }
+    if (errorCode=="auth/wrong-password"){
+      alert("Invalid password!")
+    }
   });
 }
 
@@ -77,18 +87,19 @@ export const continueWithGoogle = ()=> {
 }
 
 
-export const userObserver = (setCurrentUser)=> {
+export const userObserver = (setCurrentUser,setPending)=> {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
+      
         const uid = user.uid;
         setCurrentUser(user);
-        // ...
+        setPending(false)
+       
       } else {
         // User is signed out
         setCurrentUser(null)
+        setPending(false)
         // ...
       }
     });
@@ -97,7 +108,7 @@ export const userObserver = (setCurrentUser)=> {
 
 
 export const logOut =()=>{
-  
+
       const auth = getAuth();
       signOut(auth).then(() => {
         // Sign-out successful.

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { continueWithGoogle, signIn } from './../helpers/firebase';
+import React, { useState, useContext } from "react";
+import { continueWithGoogle, logIn } from './../helpers/firebase';
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { Redirect } from "react-router";
 
-export default function Register() {
+
+export default function Login() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +13,7 @@ export default function Register() {
   const handleSubmit = () => {
     const user = { email, password };
    
-    signIn(user.email, user.password);
+    logIn(user.email, user.password);
     history.push('/');
   }
 
@@ -19,7 +22,11 @@ export default function Register() {
     history.push('/');
   }
 
+  const { currentUser } = useContext(AuthContext);
 
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="register">

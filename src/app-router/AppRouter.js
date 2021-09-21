@@ -1,24 +1,30 @@
-import {BrowserRouter, Switch, Route} from "react-router-dom"
-import React from 'react'
-import Navbar from "../components/Navbar"
-import Register from "../pages/Register"
-import Login from "../pages/Login"
-import Dashboard from "../pages/Dashboard"
+import React from "react";
 
-export default function AppRouter() {
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Dashboard from "./../pages/Dashboard";
+import Login from "./../pages/Login";
+import Register from "./../pages/Register";
+import Navbar from "./../components/Navbar"
+import Profile from "./../pages/Profile"
+import NewBlog from "./../pages/NewBlog"
+import { AuthContextProvider } from "../contexts/AuthContext";
+import PrivateRouter from "./PrivateRouter";
 
-
+const App = () => {
     return (
-        <BrowserRouter>
-            <Navbar/>
-            
-            <Switch>
-                <Route exact path="/" component={Dashboard}/>
-                <Route exact path="/register" component={Register}/>
-                <Route exact path="/login" component={Login}/>
-            </Switch>
-        </BrowserRouter>
-    )
-}
+        <AuthContextProvider>
+            <Router>
+                <div>
+                    <Navbar />
+                    <PrivateRouter exact path="/" component={Dashboard} />
+                    <PrivateRouter exact path="/profile" component={Profile} />
+                    <PrivateRouter exact path="/new" component={NewBlog} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/register" component={Register} />
+                </div>
+            </Router>
+        </AuthContextProvider>
+    );
+};
 
-
+export default App;

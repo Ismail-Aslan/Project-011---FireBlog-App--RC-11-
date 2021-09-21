@@ -4,17 +4,20 @@ export const AuthContext = createContext();
 
 
 
-function AuthContextProvider(props) {
+export function AuthContextProvider(props) {
 
-  const [currentUser, setCurrentUser] = useState();
-  console.log(
-    "🚀 ~ file: AuthContext.js ~ line 10 ~ AuthContextProvider ~ currentUser",
-    currentUser
-  );
+  const [currentUser, setCurrentUser] = useState(null);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
-    userObserver(setCurrentUser);
+    userObserver(setCurrentUser,setPending);
+    
   }, []);
+
+  if(pending){
+    console.log("pending");
+    return <>Loading...</>
+  }
 
   return (
     <AuthContext.Provider value={{ currentUser }}>
@@ -24,17 +27,3 @@ function AuthContextProvider(props) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-export default AuthContextProvider;
