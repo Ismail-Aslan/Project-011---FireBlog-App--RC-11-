@@ -46,7 +46,7 @@ export default function Login() {
           <input type="button" className="btn btn-primary form-control" value="LOGIN" onClick={handleSubmit} />
         </form>
 
-        <button className="btn btn-primary form-control" onClick={handleProviderRegister}>Continue with <img className="google-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" alt="" /></button>
+        <button className="btn btn-dark form-control" onClick={handleProviderRegister}>Continue with <img className="google-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" alt="" /></button>
       </div>
       
     </div>

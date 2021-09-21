@@ -91,6 +91,11 @@ body {
   text-decoration: none;
 }
 
+.btn-dark {
+  background-color: lightyellow;
+  color: #000000;
+}
+
 .google-logo {
   height: 1.3rem;
   vertical-align: bottom;
