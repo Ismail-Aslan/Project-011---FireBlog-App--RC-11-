@@ -90,3 +90,8 @@ body {
 .navbar-link {
   text-decoration: none;
 }
+
+.google-logo {
+  height: 1.3rem;
+  vertical-align: bottom;
+}
