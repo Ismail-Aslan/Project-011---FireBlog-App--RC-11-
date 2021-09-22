@@ -10,6 +10,13 @@ import {
         signOut 
       } from "firebase/auth";
 
+import { 
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs
+      } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCitGM7yejBryXfUOV3TJCTaDdtQFXaLuE",
   authDomain: "fireblog-app-5b03a.firebaseapp.com",
@@ -22,6 +29,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 
 export const createUser = ( email, password)=> {
   const auth = getAuth();
@@ -81,7 +89,6 @@ export const continueWithGoogle = ()=> {
       });
 }
 
-
 export const userObserver = (setCurrentUser,setPending)=> {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -101,13 +108,67 @@ export const userObserver = (setCurrentUser,setPending)=> {
 
 }
 
-
 export const logOut =()=>{
 
       const auth = getAuth();
       signOut(auth).then(() => {
+        alert("Çıkış yapıldı!")
         // Sign-out successful.
       }).catch((error) => {
         // An error happened.
       });
+}
+
+
+
+// firestore
+
+const db = getFirestore();
+
+
+
+export const addData = async(currentUser,title,content,image) => {
+
+  try {
+    const docRef = await addDoc(collection(db, "blogs"), {
+      author: currentUser.email,
+      title: title,
+      content: content,
+      get_comment_count: 0,
+      get_like_count: 0,
+      image: image,
+      published_date: Date.now()
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+
+}
+
+// Add a second document with a generated ID.
+
+// try {
+//   const docRef = await addDoc(collection(db, "users"), {
+//     first: "Alan",
+//     middle: "Mathison",
+//     last: "Turing",
+//     born: 1912
+//   });
+
+//   console.log("Document written with ID: ", docRef.id);
+// } catch (e) {
+//   console.error("Error adding document: ", e);
+// }
+
+
+
+export const readData = async() => {
+
+  const querySnapshot = await getDocs(collection(db, "blogs"));
+  querySnapshot.forEach((doc) => {
+    console.log(doc);
+    console.log(`${doc.id} => ${doc.data()}`);
+});
+
 }

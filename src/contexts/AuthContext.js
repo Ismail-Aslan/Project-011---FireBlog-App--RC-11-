@@ -15,7 +15,7 @@ export function AuthContextProvider(props) {
   }, []);
 
   if(pending){
-    console.log("pending");
+    // console.log("pending");
     return <>Loading...</>
   }
 

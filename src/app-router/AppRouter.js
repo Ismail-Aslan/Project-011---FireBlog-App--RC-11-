@@ -15,7 +15,7 @@ const Approuter = () => {
     <AuthContextProvider>
       <Router>
         <Navbar />
-        <PrivateRouter exact path="/" component={Dashboard} />
+        <Route exact path="/" component={Dashboard} />
         <PrivateRouter exact path="/profile" component={Profile} />
         <PrivateRouter exact path="/new" component={NewBlog} />
         <Route exact path="/login" component={Login} />

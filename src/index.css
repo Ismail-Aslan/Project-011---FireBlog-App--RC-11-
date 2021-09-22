@@ -100,3 +100,6 @@ body {
   height: 1.3rem;
   vertical-align: bottom;
 }
+.content {
+  height: 250px;
+}
