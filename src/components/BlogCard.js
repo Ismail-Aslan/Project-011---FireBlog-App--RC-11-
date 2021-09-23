@@ -8,7 +8,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 
 export default function BlogCard(props) {
-  const [like, setLike] = useState(props.like.length);
+  const [like, setLike] = useState(props.like);
   const [comment_count, setComment_count] = useState(props.comment_count);
   const { currentUser } = useContext(AuthContext);
 
