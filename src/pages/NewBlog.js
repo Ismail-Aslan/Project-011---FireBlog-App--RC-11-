@@ -1,7 +1,7 @@
 import React, {useState, useContext, } from 'react'
 import { AuthContext } from "../contexts/AuthContext";
 import { addData} from './../helpers/firebase';
-import { useHistory } from "react-router-dom";
+
 
 export default function NewBlog() {
 
@@ -14,7 +14,6 @@ export default function NewBlog() {
 
     const handleClick = () => {
         addData(currentUser,title,content,imageURL);
-       console.log("*********************************************************");
         setTitle("")
         setContent("")
         setImageURL("")
@@ -43,8 +42,6 @@ export default function NewBlog() {
       </div>
       
     </div>
-        // <div>
-        //     <button onClick={()=>addData(currentUser,"Deneme","as dfghjkh gsdadfxg möçmömbn vxfdzs fghjkhgfdf zxcvbhgfdszfgvb fdghjkgfds ","https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg")}>Add blog</button>
-        // </div>
+      
     )
 }
