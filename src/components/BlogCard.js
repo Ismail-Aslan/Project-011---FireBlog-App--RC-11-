@@ -1,21 +1,35 @@
 import { Timestamp } from "@firebase/firestore";
-import React, { useState } from "react";
-import { updateLike } from "../helpers/firebase";
+import React, { useState, useContext } from "react";
+import { updateLike,updateComment } from "../helpers/firebase";
 import "./BlogCard.css";
+// import moment from "moment";
+import { AuthContext } from "../contexts/AuthContext";
+
 
 
 export default function BlogCard(props) {
-  const [like, setLike] = useState(props.like);
-  const [comment, setsetComment] = useState(props.comment);
+  const [like, setLike] = useState(props.like.length);
+  const [comment_count, setComment_count] = useState(props.comment_count);
+  const { currentUser } = useContext(AuthContext);
+
+  console.log("currentUser:",currentUser);
 
   const updateLikes = () => {
-    updateLike(props.id);
-    setLike(like + 1);
+    updateLike(props.id,currentUser.email);
+    setLike(like+1);
   };
 
+  const updateComments = () => {
 
-  const x = new Timestamp(props.date).toDate()
-console.log(x);
+    const commentX = prompt("yorum giriniz:")
+    updateComment(props.id,commentX,currentUser);
+    setComment_count(comment_count + 1);
+  };
+ 
+
+
+
+  
   return (
     <div className="blog-card-container">
       <div
@@ -27,7 +41,8 @@ console.log(x);
       <div className="blog-card blog-card-main-container ">
         <h2>{props.title}</h2>
         <h3>{props.date}</h3>
-        <p>{props.content}</p>
+        {/* <h3>{moment(props.date).format("MMM DD, YYYY")}</h3> */}
+        <p>{props.content.length>80 ?props.content.substring(0,80) + "...":props.content}</p>
       </div>
       <div className="blog-card blog-card-footer-container ">
         <h2>
@@ -41,9 +56,9 @@ console.log(x);
           </button>{like}
           </div>
           <div>
-          <button className="blog-card-btn" onClick={updateLikes}>
-            <i className="far fa-comment" style={like>0 ? {color:"red"} : {color:"black"}}style={like>0 ? {color:"red"} : {color:"black"}}></i> 
-          </button>{like}</div>
+          <button className="blog-card-btn" onClick={updateComments}>
+            <i className="far fa-comment" style={like>0 ? {color:"red"} : {color:"black"}}></i> 
+          </button>{comment_count}</div>
         </div>
       </div>
     </div>

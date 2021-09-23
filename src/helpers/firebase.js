@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signOut,
+  updateProfile
 } from "firebase/auth";
 
 import {
@@ -18,6 +19,8 @@ import {
   doc,
   updateDoc,
   increment,
+  arrayUnion,
+  addCollection,
 } from "firebase/firestore";
 
 import {firebaseConfig} from "../FirebaseConfig";
@@ -25,9 +28,9 @@ import {firebaseConfig} from "../FirebaseConfig";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const createUser = (email, password) => {
+export const createUser = async(email, password,name) => {
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
+  await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
@@ -38,15 +41,25 @@ export const createUser = (email, password) => {
       const errorMessage = error.message;
       // ..
     });
+
+    updateProfile(auth.currentUser, {
+      displayName: name, photoURL: "https://example.com/jane-q-user/profile.jpg"
+    }).then(() => {
+      console.log("ok");
+    }).catch((error) => {
+      console.log(error);
+    });
 };
 
-export const logIn = (email, password) => {
+export const logIn = async(email, password) => {
   const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
       // ...
+
+      
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -57,6 +70,8 @@ export const logIn = (email, password) => {
         alert("Invalid password!");
       }
     });
+    
+     
 };
 
 export const continueWithGoogle = () => {
@@ -121,14 +136,11 @@ export const addData = async (currentUser, title, content, image) => {
       author: currentUser.email,
       title: title,
       content: content,
-      comments: {
-        commemt_count:0,
-
-
-      },
+      comment_count:0,
       get_like_count: 0,
       image: image,
-      published_date: new Date(),
+      // published_date: new Date().toISOString(),
+      published_date: new Date().toLocaleString(),
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
@@ -138,18 +150,35 @@ export const addData = async (currentUser, title, content, image) => {
 
 export const readData = async (setData) => {
   const querySnapshot = await getDocs(collection(db, "blogs"));
+ 
+  // querySnapshot.docs.map(async(el) => {
+  //   const x = await getDocs(collection(db, "blogs",el.id,"comments"));
+
+  //   x.docs.map(el => console.log(el.data()))
+  //   console.log(x.docs.length);
+  // })
+
   setData(querySnapshot.docs);
+
 };
 
-export const updateLike = async (id) => {
+export const updateLike = async (id,user) => {
   const likeRef = doc(db, "blogs", id);
   await updateDoc(likeRef, {
     get_like_count: increment(1),
   });
 };
-export const updateComment = async (id) => {
-  const likeRef = doc(db, "blogs", id);
-  await updateDoc(likeRef, {
-    get_like_count: increment(1),
-  });
+export const updateComment = async (id,userComment,user) => {
+  const commentsRef = collection(db, "blogs", id , "comments");
+  const commemt_countRef = doc(db, "blogs", id );
+
+  await updateDoc(commemt_countRef, {
+      comment_count:increment(1)
+    });
+  await addDoc(commentsRef, {
+      
+      userComment
+       
+    });
+  
 };

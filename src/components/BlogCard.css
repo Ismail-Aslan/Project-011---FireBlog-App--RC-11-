@@ -5,6 +5,7 @@
     border-radius: 8px;
     box-shadow: 0 0 8px 3px black;
     margin: 20px;
+    overflow: hidden;
     
 }
 .blog-card-img-container{

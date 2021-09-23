@@ -14,6 +14,7 @@ export default function Register() {
   const { currentUser } = useContext(AuthContext);
 
   const handleSubmit = () => {
+    console.log(name);
     const user = { email, password,name };
    
     createUser(user.email, user.password, user.name);
