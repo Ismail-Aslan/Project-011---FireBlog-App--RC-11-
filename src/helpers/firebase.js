@@ -20,15 +20,7 @@ import {
   increment,
 } from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCitGM7yejBryXfUOV3TJCTaDdtQFXaLuE",
-  authDomain: "fireblog-app-5b03a.firebaseapp.com",
-  projectId: "fireblog-app-5b03a",
-  storageBucket: "fireblog-app-5b03a.appspot.com",
-  messagingSenderId: "692139903443",
-  appId: "1:692139903443:web:79b670e5e4544005f54726",
-  measurementId: "G-CFVF36P37S",
-};
+import {firebaseConfig} from "../FirebaseConfig";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

@@ -1,6 +1,8 @@
+import { Timestamp } from "@firebase/firestore";
 import React, { useState } from "react";
 import { updateLike } from "../helpers/firebase";
 import "./BlogCard.css";
+
 
 export default function BlogCard(props) {
   const [like, setLike] = useState(props.like);
@@ -10,7 +12,10 @@ export default function BlogCard(props) {
     updateLike(props.id);
     setLike(like + 1);
   };
-console.log();
+
+
+  const x = new Timestamp(props.date).toDate()
+console.log(x);
   return (
     <div className="blog-card-container">
       <div
