@@ -104,3 +104,7 @@ body {
 .content {
   height: 250px;
 }
+
+.dashboard-container {
+  text-align: center;
+}

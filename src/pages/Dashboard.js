@@ -15,9 +15,9 @@ export default function Dashboard() {
 
 
     return (
-        data.map((doc,key)=> {
-            //    return <h1>{s.data().author}</h1>
-            return <BlogCard
+        <div className="dashboard-container">
+            {data.map((doc,key)=> {
+             return <BlogCard
                     id={doc.id}
                     like={doc.data().get_like_count}
                     comment_count={doc.data().comment_count}
@@ -30,7 +30,8 @@ export default function Dashboard() {
                     key={key}
                     />
                     
-                    {console.log(data)}
-                })
+                   
+                })}
+        </div>
     )
 }
