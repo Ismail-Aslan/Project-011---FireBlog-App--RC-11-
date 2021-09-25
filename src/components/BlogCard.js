@@ -1,9 +1,11 @@
 import { Timestamp } from "@firebase/firestore";
 import React, { useState, useContext } from "react";
-import { updateLike,updateComment } from "../helpers/firebase";
+import { updateLike,updateComment,readDetails } from "../helpers/firebase";
 import "./BlogCard.css";
 import moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
+import { useHistory } from "react-router-dom";
+
 
 
 
@@ -11,6 +13,7 @@ export default function BlogCard(props) {
   const [like, setLike] = useState(props.like);
   const [comment_count, setComment_count] = useState(props.comment_count);
   const { currentUser } = useContext(AuthContext);
+  const history = useHistory()
 
   // console.log("currentUser:",currentUser);
 
@@ -19,11 +22,16 @@ export default function BlogCard(props) {
     setLike(like+1);
   };
 
-  const updateComments = () => {
+  const updateComments = (e) => {
 
-    const commentX = prompt("yorum giriniz:")
-    updateComment(props.id,commentX,currentUser.email);
-    setComment_count(comment_count + 1);
+    // const commentX = prompt("yorum giriniz:")
+    // updateComment(props.id,commentX,currentUser.email);
+    // setComment_count(comment_count + 1);
+
+    
+    // readDetails(e.target.parentNode.id)
+    history.push("/details/" + e.target.parentNode.id)
+
   };
  
 
@@ -57,7 +65,7 @@ export default function BlogCard(props) {
           </button>{like}
           </div>
           <div>
-          <button className="blog-card-btn" onClick={updateComments}>
+          <button className="blog-card-btn" id={props.id} onClick={(e)=>updateComments(e)}>
             <i className="far fa-comment" style={comment_count>0 ? {color:"red"} : {color:"black"}}></i> 
           </button>{comment_count}</div>
         </div>

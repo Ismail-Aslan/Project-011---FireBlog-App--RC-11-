@@ -16,6 +16,7 @@ import {
   collection,
   addDoc,
   getDocs,
+  getDoc,
   doc,
   updateDoc,
   increment,
@@ -159,8 +160,8 @@ export const readBlogs = async (setData,setPending) => {
 
   setData(blogsColl.docs);
   setPending(false);
-  console.log(blogsColl.docs[0]);
-  console.log(blogsColl.size);
+  // console.log(blogsColl.docs[0]);
+  // console.log(blogsColl.size);
   
 
 };
@@ -184,10 +185,16 @@ export const updateComment = async (id,userComment,user) => {
        
     });
     
-  // await setDoc(doc(db, "blogs", id ), {
-      
-  //     user
-       
-  //   });
   
+};
+
+
+
+export const readDetails = async (setData,id) => {
+  
+  const detailsData = await getDoc(doc(db, "blogs",id));
+
+  console.log(detailsData.data());
+  setData(detailsData.data())
+ 
 };

@@ -10,6 +10,7 @@ import NewBlog from "./../pages/NewBlog";
 import { AuthContextProvider } from "../contexts/AuthContext";
 import PrivateRouter from "./PrivateRouter";
 import { BlogContextProvider } from "../contexts/BlogContext";
+import Details from "../pages/Details";
 
 const Approuter = () => {
   return (
@@ -22,6 +23,7 @@ const Approuter = () => {
           <PrivateRouter exact path="/new" component={NewBlog} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route path="/details" component={Details} />
         </Router>
       </BlogContextProvider>
     </AuthContextProvider>
