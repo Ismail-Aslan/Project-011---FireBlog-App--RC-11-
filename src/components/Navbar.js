@@ -34,15 +34,15 @@ export default function Navbar() {
         <div className={"menu"}>
           {!currentUser ?
             <>
-              <Link className="navbar-link" to="/login" ><p onClick={() => setShowToggle(false)}>Login</p></Link>
-              <Link className="navbar-link" to="/register" ><p onClick={() => setShowToggle(false)}>Register</p></Link>
+              <Link className="navbar-link" to="/login"  onClick={() => setShowToggle(false)}>Login</Link>
+              <Link className="navbar-link" to="/register"  onClick={() => setShowToggle(false)}>Register</Link>
 
             </>
             :
             <>
-              <Link className="navbar-link" to="/profile" ><p onClick={() => { setShowToggle(false) }}>Profile</p></Link>
-              <Link className="navbar-link" to="/new" ><p onClick={() => { setShowToggle(false)}}>New</p></Link>
-              <Link className="navbar-link" to="/login" ><p onClick={() => { setShowToggle(false); logOut() }}>Logout</p></Link>
+              <Link className="navbar-link" to="/profile"  onClick={() => { setShowToggle(false) }}>Profile</Link>
+              <Link className="navbar-link" to="/new"  onClick={() => { setShowToggle(false)}}>New</Link>
+              <Link className="navbar-link" to="/login"  onClick={() => { setShowToggle(false); logOut() }}>Logout</Link>
             </>
 
           }

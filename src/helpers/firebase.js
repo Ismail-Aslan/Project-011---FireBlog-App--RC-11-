@@ -19,8 +19,7 @@ import {
   doc,
   updateDoc,
   increment,
-  arrayUnion,
-  addCollection,
+  setDoc
 } from "firebase/firestore";
 
 import {firebaseConfig} from "../FirebaseConfig";
@@ -139,8 +138,8 @@ export const addData = async (currentUser, title, content, image) => {
       comment_count:0,
       get_like_count: 0,
       image: image,
-      // published_date: new Date().toISOString(),
-      published_date: new Date().toLocaleString(),
+      published_date: new Date().toISOString(),
+      // published_date: new Date().toLocaleString(),
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
@@ -148,8 +147,8 @@ export const addData = async (currentUser, title, content, image) => {
   }
 };
 
-export const readData = async (setData) => {
-  const querySnapshot = await getDocs(collection(db, "blogs"));
+export const readBlogs = async (setData,setPending) => {
+  const blogsColl = await getDocs(collection(db, "blogs"));
  
   // querySnapshot.docs.map(async(el) => {
   //   const x = await getDocs(collection(db, "blogs",el.id,"comments"));
@@ -158,7 +157,11 @@ export const readData = async (setData) => {
   //   console.log(x.docs.length);
   // })
 
-  setData(querySnapshot.docs);
+  setData(blogsColl.docs);
+  setPending(false);
+  console.log(blogsColl.docs[0]);
+  console.log(blogsColl.size);
+  
 
 };
 
@@ -171,14 +174,20 @@ export const updateLike = async (id,user) => {
 export const updateComment = async (id,userComment,user) => {
   const commentsRef = collection(db, "blogs", id , "comments");
   const commemt_countRef = doc(db, "blogs", id );
-
   await updateDoc(commemt_countRef, {
       comment_count:increment(1)
     });
   await addDoc(commentsRef, {
       
-      userComment
+      userComment:userComment,
+      author:user
        
     });
+    
+  // await setDoc(doc(db, "blogs", id ), {
+      
+  //     user
+       
+  //   });
   
 };

@@ -6,8 +6,8 @@
 
 body {
   background-color: #eee;
-  /* color: #fff; */
-  color: red;
+  color: #fff;
+  /* color: red; */
   font-family: "Poppins", "sans-serif";
   margin: 0;
 }

@@ -9,18 +9,21 @@ import Profile from "./../pages/Profile";
 import NewBlog from "./../pages/NewBlog";
 import { AuthContextProvider } from "../contexts/AuthContext";
 import PrivateRouter from "./PrivateRouter";
+import { BlogContextProvider } from "../contexts/BlogContext";
 
 const Approuter = () => {
   return (
     <AuthContextProvider>
-      <Router>
-        <Navbar />
-        <Route exact path="/" component={Dashboard} />
-        <PrivateRouter exact path="/profile" component={Profile} />
-        <PrivateRouter exact path="/new" component={NewBlog} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-      </Router>
+      <BlogContextProvider>
+        <Router>
+          <Navbar />
+          <Route exact path="/" component={Dashboard} />
+          <PrivateRouter exact path="/profile" component={Profile} />
+          <PrivateRouter exact path="/new" component={NewBlog} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+        </Router>
+      </BlogContextProvider>
     </AuthContextProvider>
   );
 };

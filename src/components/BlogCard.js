@@ -2,7 +2,7 @@ import { Timestamp } from "@firebase/firestore";
 import React, { useState, useContext } from "react";
 import { updateLike,updateComment } from "../helpers/firebase";
 import "./BlogCard.css";
-// import moment from "moment";
+import moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
 
 
@@ -12,7 +12,7 @@ export default function BlogCard(props) {
   const [comment_count, setComment_count] = useState(props.comment_count);
   const { currentUser } = useContext(AuthContext);
 
-  console.log("currentUser:",currentUser);
+  // console.log("currentUser:",currentUser);
 
   const updateLikes = () => {
     updateLike(props.id,currentUser.email);
@@ -22,7 +22,7 @@ export default function BlogCard(props) {
   const updateComments = () => {
 
     const commentX = prompt("yorum giriniz:")
-    updateComment(props.id,commentX,currentUser);
+    updateComment(props.id,commentX,currentUser.email);
     setComment_count(comment_count + 1);
   };
  
@@ -40,8 +40,9 @@ export default function BlogCard(props) {
       </div>
       <div className="blog-card blog-card-main-container ">
         <h2>{props.title}</h2>
-        <h3>{props.date}</h3>
-        {/* <h3>{moment(props.date).format("MMM DD, YYYY")}</h3> */}
+        {/* <h3>{props.date}</h3> */}
+        <h3>{moment(props.date).format("MMM DD, YYYY")}</h3>
+        {/* <p>{props.content}</p> */}
         <p>{props.content.length>80 ?props.content.substring(0,80) + "...":props.content}</p>
       </div>
       <div className="blog-card blog-card-footer-container ">
@@ -57,7 +58,7 @@ export default function BlogCard(props) {
           </div>
           <div>
           <button className="blog-card-btn" onClick={updateComments}>
-            <i className="far fa-comment" style={like>0 ? {color:"red"} : {color:"black"}}></i> 
+            <i className="far fa-comment" style={comment_count>0 ? {color:"red"} : {color:"black"}}></i> 
           </button>{comment_count}</div>
         </div>
       </div>

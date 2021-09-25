@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import BlogCard from '../components/BlogCard';
-import { readData,updatedata } from '../helpers/firebase'
+import { readBlogs,updatedata } from '../helpers/firebase'
 import { doc } from '@firebase/firestore';
 import { async } from '@firebase/util';
 export default function Dashboard() {
 
     const [data, setData] = useState([])
+    const [pending, setPending] = useState(true);
 
     useEffect(() => {
-        readData(setData);
+        readBlogs(setData,setPending);
     }, [])
     // console.log(data);
 
-
+    if(pending){
+        // console.log("pending");
+        return <>Loading...</>
+      }
 
     return (
         <div className="dashboard-container">
@@ -25,8 +29,8 @@ export default function Dashboard() {
                     title={doc.data().title}
                     author={doc.data().author}
                     image={doc.data().image}
-                    // date={doc.data().published_date.toString()}
-                    date={doc.data().published_date}
+                    date={doc.data().published_date.toString()}
+                    // date={doc.data().published_date}
                     key={key}
                     />
                     
