@@ -1,4 +1,3 @@
-import { Timestamp } from "@firebase/firestore";
 import React, { useState, useContext } from "react";
 import { updateLike,updateComment,readDetails } from "../helpers/firebase";
 import "./BlogCard.css";
@@ -22,7 +21,7 @@ export default function BlogCard(props) {
     setLike(like+1);
   };
 
-  const updateComments = (e) => {
+  const openDetails = (e) => {
 
     // const commentX = prompt("yorum giriniz:")
     // updateComment(props.id,commentX,currentUser.email);
@@ -30,23 +29,23 @@ export default function BlogCard(props) {
 
     
     // readDetails(e.target.parentNode.id)
-    history.push("/details/" + e.target.parentNode.id)
+    // console.log(e.target.id);
+    history.push("/details/" + e.target.id)
 
   };
  
 
 
-
   
   return (
-    <div className="blog-card-container">
+    <div className="blog-card-container" >
       <div
         className="blog-card blog-card-img-container"
         style={{ backgroundImage: `url(${props.image})` }}
       >
         {/* <img src={props.image} alt="blog image" /> */}
       </div>
-      <div className="blog-card blog-card-main-container ">
+      <div className="blog-card blog-card-main-container " >
         <h2>{props.title}</h2>
         {/* <h3>{props.date}</h3> */}
         <h3>{moment(props.date).format("MMM DD, YYYY")}</h3>
@@ -65,11 +64,12 @@ export default function BlogCard(props) {
           </button>{like}
           </div>
           <div>
-          <button className="blog-card-btn" id={props.id} onClick={(e)=>updateComments(e)}>
+          <button className="blog-card-btn"  onClick={(e)=>updateComments(e)}>
             <i className="far fa-comment" style={comment_count>0 ? {color:"red"} : {color:"black"}}></i> 
           </button>{comment_count}</div>
         </div>
       </div>
+    <div className="blog-card-layer" id={props.id} onClick={(e)=>openDetails(e)}></div>
     </div>
   );
 }

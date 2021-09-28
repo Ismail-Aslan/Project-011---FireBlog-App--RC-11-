@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import { async } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -150,21 +151,16 @@ export const addData = async (currentUser, title, content, image) => {
 
 export const readBlogs = async (setData,setPending) => {
   const blogsColl = await getDocs(collection(db, "blogs"));
- 
-  // querySnapshot.docs.map(async(el) => {
-  //   const x = await getDocs(collection(db, "blogs",el.id,"comments"));
-
-  //   x.docs.map(el => console.log(el.data()))
-  //   console.log(x.docs.length);
-  // })
-
   setData(blogsColl.docs);
   setPending(false);
-  // console.log(blogsColl.docs[0]);
-  // console.log(blogsColl.size);
-  
-
 };
+export const updateBlog = async(id,title,image,content) => {
+  await updateDoc(doc(db, "blogs", id), {
+    title: title,
+    image: image,
+    content:content
+  });
+}
 
 export const updateLike = async (id,user) => {
   const likeRef = doc(db, "blogs", id);
@@ -193,8 +189,13 @@ export const updateComment = async (id,userComment,user) => {
 export const readDetails = async (setData,id) => {
   
   const detailsData = await getDoc(doc(db, "blogs",id));
-
-  console.log(detailsData.data());
-  setData(detailsData.data())
+  await setData(detailsData.data())
  
 };
+
+export const readComments = async (setComments,id) => {
+  const detailsComments = await getDocs(collection(db, "blogs",id,"comments"));
+  // console.log(detailsComments.docs);
+  // console.log(detailsComments.size);
+  setComments(detailsComments.docs)
+}

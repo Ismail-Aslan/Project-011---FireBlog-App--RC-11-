@@ -9,13 +9,13 @@ import Profile from "./../pages/Profile";
 import NewBlog from "./../pages/NewBlog";
 import { AuthContextProvider } from "../contexts/AuthContext";
 import PrivateRouter from "./PrivateRouter";
-import { BlogContextProvider } from "../contexts/BlogContext";
 import Details from "../pages/Details";
+import UpdateBlog from "../pages/UpdateBlog";
 
 const Approuter = () => {
   return (
     <AuthContextProvider>
-      <BlogContextProvider>
+      
         <Router>
           <Navbar />
           <Route exact path="/" component={Dashboard} />
@@ -24,8 +24,9 @@ const Approuter = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route path="/details" component={Details} />
+          <Route path="/update_blog" component={UpdateBlog} />
         </Router>
-      </BlogContextProvider>
+     
     </AuthContextProvider>
   );
 };
