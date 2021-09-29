@@ -2,14 +2,18 @@
 import React, { useState, useContext, useEffect,useRef } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { readDetails, updateBlog } from "../helpers/firebase";
+import { useHistory } from "react-router";
+
 
 export default function UpdateBlog() {
   const [data, setData] = useState([]);
+  const [x, setX] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
   const title = useRef("")
   const imageURL = useRef("");
   const content = useRef("");
+  const history = useHistory();
 
   const handleClick = () => {
       
@@ -20,6 +24,8 @@ export default function UpdateBlog() {
           imageURL.current.value,
           content.current.value
         );
+      history.push("/details/"+ window.location.pathname.split("update_blog/")[1]);
+
     }else {
       alert("Please fill the form!");
     }
@@ -27,7 +33,7 @@ export default function UpdateBlog() {
 
   
   useEffect(async () => {
-    await readDetails(setData, window.location.pathname.split("update_blog/")[1]);
+    await readDetails(setData,setX, window.location.pathname.split("update_blog/")[1]);
   }, []);
   
 

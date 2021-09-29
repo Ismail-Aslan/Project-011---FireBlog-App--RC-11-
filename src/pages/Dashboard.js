@@ -23,14 +23,14 @@ export default function Dashboard() {
             {data.map((doc,key)=> {
              return <BlogCard
                     id={doc.id}
-                    like={doc.data().get_like_count}
+                    like={doc.data().likes}
                     comment_count={doc.data().comment_count}
                     content={doc.data().content}
                     title={doc.data().title}
                     author={doc.data().author}
                     image={doc.data().image}
-                    date={doc.data().published_date.toString()}
-                    // date={doc.data().published_date}
+                    date={doc.data().publish_date.toString()}
+                    // date={doc.data().publish_date}
                     key={key}
                     />
                     

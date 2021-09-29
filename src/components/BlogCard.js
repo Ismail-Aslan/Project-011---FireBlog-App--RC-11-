@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { updateLike,updateComment,readDetails } from "../helpers/firebase";
 import "./BlogCard.css";
 import moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
@@ -16,10 +15,7 @@ export default function BlogCard(props) {
 
   // console.log("currentUser:",currentUser);
 
-  const updateLikes = () => {
-    updateLike(props.id,currentUser.email);
-    setLike(like+1);
-  };
+ 
 
   const openDetails = (e) => {
 
@@ -54,18 +50,18 @@ export default function BlogCard(props) {
       </div>
       <div className="blog-card blog-card-footer-container ">
         <h2>
-          <i className="fas fa-user-circle"></i> {props.author}
+          By {props.author}
         </h2>
         
         <div className="blog-card-btn-container">
         <div>
-          <button className="blog-card-btn" onClick={updateLikes}>
-            <i className="fas fa-heart" style={like>0 ? {color:"red"} : {color:"black"}}></i> 
-          </button>{like}
+          <button className="blog-card-btn" >
+            <i  className={like.find(el => el===currentUser.email) ? "bi bi-heart-fill" : "bi bi-heart"} style={{color:"red"}} ></i> 
+          </button>{like.length}
           </div>
           <div>
-          <button className="blog-card-btn"  onClick={(e)=>updateComments(e)}>
-            <i className="far fa-comment" style={comment_count>0 ? {color:"red"} : {color:"black"}}></i> 
+          <button className="blog-card-btn" style={{color:"gray"}}>
+            <i className="far fa-comment" ></i> 
           </button>{comment_count}</div>
         </div>
       </div>

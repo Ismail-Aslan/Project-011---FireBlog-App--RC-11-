@@ -22,7 +22,8 @@ import {
   updateDoc,
   increment,
   deleteDoc,
-  setDoc
+  setDoc,
+  get
 } from "firebase/firestore";
 
 import {firebaseConfig} from "../FirebaseConfig";
@@ -45,7 +46,7 @@ export const createUser = async(email, password,name) => {
     });
 
     updateProfile(auth.currentUser, {
-      displayName: name, photoURL: "https://example.com/jane-q-user/profile.jpg"
+      displayName: name, photoURL: "https://picsum.photos/200/300"
     }).then(() => {
       console.log("ok");
     }).catch((error) => {
@@ -135,14 +136,14 @@ const db = getFirestore();
 export const addData = async (currentUser, title, content, image) => {
   try {
     const docRef = await addDoc(collection(db, "blogs"), {
-      author: currentUser.email,
+      author: currentUser.displayName,
       title: title,
       content: content,
       comment_count:0,
-      get_like_count: 0,
+      likes: [],
       image: image,
-      published_date: new Date().toISOString(),
-      // published_date: new Date().toLocaleString(),
+      publish_date: new Date().toISOString(),
+      // publish_date: new Date().toLocaleString(),
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
@@ -163,10 +164,10 @@ export const updateBlog = async(id,title,image,content) => {
   });
 }
 
-export const updateLike = async (id,user) => {
+export const updateLike = async (id,newLikes) => {
   const likeRef = doc(db, "blogs", id);
   await updateDoc(likeRef, {
-    get_like_count: increment(1),
+    likes: newLikes
   });
 };
 
@@ -192,11 +193,10 @@ export const updateComment = async (id,userComment,user) => {
 
 
 
-export const readDetails = async (setData,id) => {
-  
+export const readDetails = async (setData,setLikeCount,id) => { 
   const detailsData = await getDoc(doc(db, "blogs",id));
   await setData(detailsData.data())
- 
+  setLikeCount(detailsData.data().likes?.length)
 };
 
 export const readComments = async (setComments,id) => {
@@ -216,43 +216,10 @@ export const readComments = async (setComments,id) => {
 
 
 export const deleteBlog = async(id)=>{
-  // deleteCollection(db, collection(db,"blogs",id,"comments"), 3);
-
-  // async function deleteCollection(db, collectionPath, batchSize) {
-  //   const collectionRef = collection(collectionPath);
-  //   const query = collectionRef.orderBy('__name__').limit(batchSize);
-  
-  //   return new Promise((resolve, reject) => {
-  //     deleteQueryBatch(db, query, resolve).catch(reject);
-  //   });
-  // }
-  
-  // async function deleteQueryBatch(db, query, resolve) {
-  //   const snapshot = await query.get();
-  
-  //   const batchSize = snapshot.size;
-  //   if (batchSize === 0) {
-  //     // When there are no documents left, we are done
-  //     resolve();
-  //     return;
-  //   }
-  
-  //   // Delete documents in a batch
-  //   const batch = batch();
-  //   snapshot.docs.forEach((doc) => {
-  //     batch.delete(doc.ref);
-  //   });
-  //   await batch.commit();
-  
-  //   // Recurse on the next process tick, to avoid
-  //   // exploding the stack.
-  //   process.nextTick(() => {
-  //     deleteQueryBatch(db, query, resolve);
-  //   });
-  // }
-
-
-
-
-
+  // yorumların tamamını getiriyoruz
+  const detailsComments = await getDocs(collection(db, "blogs",id,"comments"));
+  // getirdiğimiz yorumları map ederek sırayla siliyoruz
+  detailsComments.docs.map(async(el)=>await deleteDoc(doc(db, "blogs", id,"comments",el.id)))
+  // daha sonrada yazıyı siliyoruz
+  await deleteDoc(doc(db, "blogs", id));
 }

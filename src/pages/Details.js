@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { readComments, readDetails, updateComment,deleteBlog } from "../helpers/firebase";
+import { readComments, updateLike, readDetails, updateComment,deleteBlog } from "../helpers/firebase";
 import "./Details.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { useHistory } from "react-router";
@@ -11,6 +11,7 @@ import moment from "moment";
 export default function Details(props) {
   const [data, setData] = useState([]);
   const [comments, setComments] = useState([]);
+  const [like_count,setLikeCount] = useState(data.length > 0 ? setLikeCount(data.likes.length):null)
   const { currentUser } = useContext(AuthContext);
   const [newComment, setNewComment] = useState("")
   const history = useHistory()
@@ -27,31 +28,48 @@ export default function Details(props) {
 
 
   const handleBlogUpdate = () => {
-    if (currentUser.email === data.author) {
+    if (currentUser.displayName === data.author) {
       history.push("/update_blog/"+ window.location.pathname.split("details/")[1])
     }
   }
   
   const deleteB = ()=>{
-    deleteBlog(window.location.pathname.split("details/")[1])
-    history.push("/")
-    toast("Blog is deleted.")
-    toast.success("ok man")
+    if (currentUser.displayName === data.author) {
+      deleteBlog(window.location.pathname.split("details/")[1])
+      toast("Blog is deleted.")
+      history.push("/")
+      toast.success("ok man")
+      history.push("/")
+    }
+    
   }
   
+  const updateLikes = () => {
+    const likes = data.likes;
+    if (currentUser === null) {
+      alert("Please login!")
+    } else if (likes.find(el=>el===currentUser.email)){
+      likes.pop(currentUser.email);
+      updateLike( window.location.pathname.split("details/")[1],likes)
+      setLikeCount(like_count-1)
+    }else {
+      likes.push(currentUser.email)
+      updateLike( window.location.pathname.split("details/")[1],likes)
+      setLikeCount(like_count+1)
 
+    }
+  };
 
 
 
   useEffect(() => {
 
     readComments(setComments, window.location.pathname.split("details/")[1]);
-    console.log(currentUser);
   }, [newComment]);
 
   useEffect(() => {
-    readDetails(setData, window.location.pathname.split("details/")[1]);
-    console.log(data);
+    readDetails(setData,setLikeCount, window.location.pathname.split("details/")[1]);
+    
   }, [])
 
 
@@ -60,6 +78,7 @@ export default function Details(props) {
 
   return data ? (
     <div className="details-container">
+      
       <div
         className="details-img-container"
         style={{ backgroundImage: `url(${data.image})` }}
@@ -71,7 +90,7 @@ export default function Details(props) {
         <span>By</span>
         {data.author}
       </div>
-      <div className="details-date">{moment(data.published_date).format("MMM DD, YYYY")}</div>
+      <div className="details-date">{moment(data.publish_date).format("MMM DD, YYYY")}</div>
       <div className="details-content">
         <p>{data.content}</p>
       </div>
@@ -82,6 +101,7 @@ export default function Details(props) {
         <div className="details-author-options">
           <button onClick={handleBlogUpdate}>Update</button>
           <button onClick={deleteB}>Delete</button>
+          <button onClick={updateLikes}>like {like_count}</button>
         </div>
       }
 
