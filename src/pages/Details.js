@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { readComments, readDetails, updateComment } from "../helpers/firebase";
+import { readComments, readDetails, updateComment,deleteBlog } from "../helpers/firebase";
 import "./Details.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { useHistory } from "react-router";
+import {toast} from "react-toastify"
 import moment from "moment";
 
 
@@ -13,27 +14,46 @@ export default function Details(props) {
   const { currentUser } = useContext(AuthContext);
   const [newComment, setNewComment] = useState("")
   const history = useHistory()
-  useEffect(() => {
-
-    readComments(setComments, window.location.pathname.split("details/")[1]);
-  }, [newComment]);
-
-  useEffect(() => {
-    readDetails(setData, window.location.pathname.split("details/")[1]);
-  }, [])
 
   const handleCommentSubmit = async(e)=>{
-    if (e.keyCode == 13 && e.target.value) {
+    if (currentUser===null) {
+      alert("Please login to write comment!")
+    }else if (e.keyCode == 13 && e.target.value) {
       await updateComment(window.location.pathname.split("details/")[1],e.target.value,currentUser.email);
       setNewComment(e.target.value)
       e.target.value=""
     }
   }
+
+
   const handleBlogUpdate = () => {
     if (currentUser.email === data.author) {
       history.push("/update_blog/"+ window.location.pathname.split("details/")[1])
     }
   }
+  
+  const deleteB = ()=>{
+    deleteBlog(window.location.pathname.split("details/")[1])
+    history.push("/")
+    toast("Blog is deleted.")
+    toast.success("ok man")
+  }
+  
+
+
+
+
+  useEffect(() => {
+
+    readComments(setComments, window.location.pathname.split("details/")[1]);
+    console.log(currentUser);
+  }, [newComment]);
+
+  useEffect(() => {
+    readDetails(setData, window.location.pathname.split("details/")[1]);
+    console.log(data);
+  }, [])
+
 
 
 
@@ -56,12 +76,12 @@ export default function Details(props) {
         <p>{data.content}</p>
       </div>
       {
-        currentUser.email === data.author
+        // currentUser.email === data.author
 
-        &&
+        // &&
         <div className="details-author-options">
           <button onClick={handleBlogUpdate}>Update</button>
-          <button>Delete</button>
+          <button onClick={deleteB}>Delete</button>
         </div>
       }
 
@@ -89,7 +109,7 @@ export default function Details(props) {
                   </label>
                 </div>
                 <div className="card-body p-0">
-                  {comments.sort((b, a) => {
+                  {comments?.sort((b, a) => {
                     return (
                       (a._document.version.timestamp.seconds + a._document.version.timestamp.nanoseconds/1_000_000_000 )
                        - 

@@ -21,6 +21,7 @@ import {
   doc,
   updateDoc,
   increment,
+  deleteDoc,
   setDoc
 } from "firebase/firestore";
 
@@ -168,9 +169,14 @@ export const updateLike = async (id,user) => {
     get_like_count: increment(1),
   });
 };
+
+
 export const updateComment = async (id,userComment,user) => {
+
+
   const commentsRef = collection(db, "blogs", id , "comments");
   const commemt_countRef = doc(db, "blogs", id );
+
   await updateDoc(commemt_countRef, {
       comment_count:increment(1)
     });
@@ -198,4 +204,55 @@ export const readComments = async (setComments,id) => {
   // console.log(detailsComments.docs);
   // console.log(detailsComments.size);
   setComments(detailsComments.docs)
+}
+
+
+
+
+
+
+
+
+
+
+export const deleteBlog = async(id)=>{
+  // deleteCollection(db, collection(db,"blogs",id,"comments"), 3);
+
+  // async function deleteCollection(db, collectionPath, batchSize) {
+  //   const collectionRef = collection(collectionPath);
+  //   const query = collectionRef.orderBy('__name__').limit(batchSize);
+  
+  //   return new Promise((resolve, reject) => {
+  //     deleteQueryBatch(db, query, resolve).catch(reject);
+  //   });
+  // }
+  
+  // async function deleteQueryBatch(db, query, resolve) {
+  //   const snapshot = await query.get();
+  
+  //   const batchSize = snapshot.size;
+  //   if (batchSize === 0) {
+  //     // When there are no documents left, we are done
+  //     resolve();
+  //     return;
+  //   }
+  
+  //   // Delete documents in a batch
+  //   const batch = batch();
+  //   snapshot.docs.forEach((doc) => {
+  //     batch.delete(doc.ref);
+  //   });
+  //   await batch.commit();
+  
+  //   // Recurse on the next process tick, to avoid
+  //   // exploding the stack.
+  //   process.nextTick(() => {
+  //     deleteQueryBatch(db, query, resolve);
+  //   });
+  // }
+
+
+
+
+
 }

@@ -7,6 +7,7 @@
     color: whitesmoke;
     position: relative;
     max-height: 20vh;
+    z-index: 3;
 }
 .navbar-container div {
     padding: 20px;
